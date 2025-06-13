@@ -2,32 +2,32 @@
 <html>
 <head>
   <title>Addition Quiz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
   <style>
     body {
-      font-family:nunito ;
+      font-family: 'Nunito', sans-serif;
+      background-color: #f0f4ff;
       text-align: center;
-      margin-top: 100px;
+      padding-top: 100px;
     }
     #question {
-      font-size: 24px;
+      font-size: 28px;
       margin-bottom: 20px;
-    }
-    background colour{
-      color:red;
     }
     #result {
       font-size: 20px;
       margin-top: 15px;
-      color: green;
     }
     input[type="number"] {
-      font-size: 18px;
-      padding: 5px;
+      font-size: 20px;
+      padding: 10px;
+      width: 150px;
     }
     button {
-      font-size: 16px;
-      padding: 5px 15px;
-      margin-top: 10px;
+      font-size: 18px;
+      padding: 10px 20px;
+      margin-top: 15px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -37,34 +37,43 @@
 
   <input type="number" id="userAnswer" placeholder="Your answer">
   <br>
-  <button onclick="checkAnswer()">Submit</button>
+  <button id="submitButton" onclick="checkAnswer()">Submit</button>
 
   <div id="result"></div>
 
   <script>
     let num1, num2;
+    let waitingForNext = false;
 
     function generateQuestion() {
       num1 = Math.floor(Math.random() * 90) + 10; // 10 to 99
-      num2 = Math.floor(Math.random() * 90) + 10; // 10 to 99
+      num2 = Math.floor(Math.random() * 90) + 10;
       document.getElementById("question").innerText = `What is ${num1} + ${num2}?`;
       document.getElementById("userAnswer").value = '';
       document.getElementById("result").innerText = '';
+      const button = document.getElementById("submitButton");
+      button.innerText = "Submit";
+      button.onclick = checkAnswer;
+      waitingForNext = false;
     }
 
     function checkAnswer() {
       const userAnswer = parseInt(document.getElementById("userAnswer").value);
       const correctAnswer = num1 + num2;
-      if (userAnswer === correctAnswer) {
-        document.getElementById("result").style.color = "green";
-        document.getElementById("result").innerText = "✅ Correct!";
-      } else {
-        document.getElementById("result").style.color = "red";
-        document.getElementById("result").innerText = `❌ Wrong! The right answer is ${correctAnswer}`;
-      }
+      const result = document.getElementById("result");
+      const button = document.getElementById("submitButton");
 
-      // Wait 2 seconds then show new question
-      setTimeout(generateQuestion, 2000);
+      if (userAnswer === correctAnswer) {
+        result.style.color = "green";
+        result.innerText = "✅ Correct!";
+        setTimeout(generateQuestion, 2000);
+      } else {
+        result.style.color = "red";
+        result.innerText = `❌ Wrong! The right answer is ${correctAnswer}`;
+        button.innerText = "Next Question";
+        button.onclick = generateQuestion;
+        waitingForNext = true;
+      }
     }
 
     window.onload = generateQuestion;

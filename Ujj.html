@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Addition Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+    }
+    #question {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    #result {
+      font-size: 20px;
+      margin-top: 15px;
+      color: green;
+    }
+    input[type="number"] {
+      font-size: 18px;
+      padding: 5px;
+    }
+    button {
+      font-size: 16px;
+      padding: 5px 15px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="question">Loading...</div>
+
+  <input type="number" id="userAnswer" placeholder="Your answer">
+  <br>
+  <button onclick="checkAnswer()">Submit</button>
+
+  <div id="result"></div>
+
+  <script>
+    let num1, num2;
+
+    function generateQuestion() {
+      num1 = Math.floor(Math.random() * 90) + 10; // 10 to 99
+      num2 = Math.floor(Math.random() * 90) + 10; // 10 to 99
+      document.getElementById("question").innerText = `What is ${num1} + ${num2}?`;
+      document.getElementById("userAnswer").value = '';
+      document.getElementById("result").innerText = '';
+    }
+
+    function checkAnswer() {
+      const userAnswer = parseInt(document.getElementById("userAnswer").value);
+      const correctAnswer = num1 + num2;
+      if (userAnswer === correctAnswer) {
+        document.getElementById("result").style.color = "green";
+        document.getElementById("result").innerText = "✅ Correct!";
+      } else {
+        document.getElementById("result").style.color = "red";
+        document.getElementById("result").innerText = `❌ Wrong! The right answer is ${correctAnswer}`;
+      }
+
+      // Wait 2 seconds then show new question
+      setTimeout(generateQuestion, 2000);
+    }
+
+    window.onload = generateQuestion;
+  </script>
+
+</body>
+</html>
